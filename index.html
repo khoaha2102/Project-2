@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Submission</title>
+</head>
+<body>
+    <h1>Submit Your Details</h1>
+    <form id="myForm" action="/submit-form" method="post">
+        <!-- Username and email field -->
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required><br><br>
+
+        
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br><br>
+        <!--Submit button-->
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        // Wait to be submit
+        document.getElementById('myForm').addEventListener('submit', async function(e) {
+            e.preventDefault(); // Prevent the page reload
+            // Collect form data
+            const formData = new FormData(e.target);  // Get the form
+            const formObject = Object.fromEntries(formData.entries());  // Converts it to an object
+
+            // Send the data to the server using POST
+            const response = await fetch('/submit-form', {
+                method: 'POST', //Use POST to send
+                headers: {
+                    'Content-Type': 'application/json',  // Sending JSON data
+                },
+                body: JSON.stringify(formObject),  // Send form data as JSON
+            });
+
+            const result = await response.json();  // Wait for the server to response
+            alert(result.message);  // Show the "submitted" message
+        });
+    </script>
+</body>
+</html>
